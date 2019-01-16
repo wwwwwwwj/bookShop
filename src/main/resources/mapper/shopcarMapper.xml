@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.shopcarMapper" >
+  <resultMap id="BaseResultMap" type="com.domain.shopcar" >
+    <id column="sid" property="sid" jdbcType="INTEGER" />
+    <result column="bookid" property="bookid" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="allShopResultMap" type="com.domain.shopCarGoods" >
+    <id column="bookid" property="bookid" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="cover" property="cover" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="bookIdResultMap" type="com.domain.shopcar" >
+    <result column="bookid" property="bookid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sid, bookid, num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shopcar
+    where sid = #{sid,jdbcType=INTEGER}
+  </select>
+  <select id="selectNum" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select 
+    num
+    from shopcar
+    where bookid = #{bookid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAllGoods" resultMap="allShopResultMap" >
+  select bookname,author,price,cover,num from book,shopcar where book.bookid=shopcar.bookid
+  </select>
+   <select id="selectBookid" resultType="java.lang.String">
+    select 
+    bookid
+    from shopcar
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shopcar
+    where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.domain.shopcar" >
+    insert into shopcar (sid, bookid, num
+      )
+    values (#{sid,jdbcType=INTEGER}, #{bookid,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.domain.shopcar" >
+    insert into shopcar
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="bookid != null" >
+        bookid,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="bookid != null" >
+        #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.domain.shopcar" >
+    update shopcar
+    <set >
+      <if test="bookid != null" >
+        bookid = #{bookid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateNum" parameterType="com.domain.shopcar" >
+    update shopcar
+    set  num = #{num,jdbcType=INTEGER}
+    where bookid = #{bookid,jdbcType=VARCHAR}
+  </update>
+</mapper>

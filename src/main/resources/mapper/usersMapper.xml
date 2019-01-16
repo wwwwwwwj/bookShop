@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.usersMapper" >
+  <resultMap id="BaseResultMap" type="com.domain.users" >
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="paypass" property="paypass" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.domain.users" >
+    insert into users (username, password, paypass
+      )
+    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{paypass,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <update id="updateByUsername" parameterType="com.domain.users" >
+    update users
+    set password = #{password,jdbcType=VARCHAR},
+      paypass = #{paypass,jdbcType=VARCHAR}
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select username, password, paypass from users where username=#{username,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  select username, password, paypass from users
+  </select>
+    <delete id="deleteByUsername" parameterType="java.lang.String" >
+    delete from users
+    where username = #{username,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.domain.users" >
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="paypass != null" >
+        paypass,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="paypass != null" >
+        #{paypass,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
